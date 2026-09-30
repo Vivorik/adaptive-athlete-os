@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { fetchOwnProfile } from "@/lib/profiles";
 
 export async function requireUser() {
   const supabase = await createClient();
@@ -16,11 +17,7 @@ export async function requireUser() {
 
 export async function requireProfile() {
   const { supabase, user } = await requireUser();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("username")
-    .eq("id", user.id)
-    .maybeSingle();
+  const profile = await fetchOwnProfile(supabase, user.id);
 
-  return { supabase, user, username: profile?.username ?? null };
+  return { supabase, user, ...profile };
 }

@@ -18,11 +18,13 @@ const NAV_ITEMS = [
 
 type AppShellProps = {
   username: string | null;
+  displayName?: string | null;
   children: ReactNode;
 };
 
-export function AppShell({ username, children }: AppShellProps) {
+export function AppShell({ username, displayName, children }: AppShellProps) {
   const pathname = usePathname();
+  const label = displayName ?? username;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -38,9 +40,9 @@ export function AppShell({ username, children }: AppShellProps) {
           <div className="flex shrink-0 items-center gap-1">
             {username ? (
               <Button variant="ghost" size="sm" asChild className="min-w-0 px-2 sm:px-3">
-                <Link href={`/u/${username}`}>
+                <Link href={`/u/${username}`} title={username}>
                   <User />
-                  <span className="max-w-24 truncate sm:max-w-none">{username}</span>
+                  <span className="max-w-24 truncate sm:max-w-none">{label}</span>
                 </Link>
               </Button>
             ) : null}

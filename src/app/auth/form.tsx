@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { DISPLAY_NAME_LIMITS } from "@/lib/display-name";
 import { signIn, signUp } from "./actions";
 import { initialAuthState } from "./auth-state";
 
@@ -19,6 +20,22 @@ export function AuthForm({ mode, nextPath, notice }: AuthFormProps) {
   return (
     <form action={formAction} className="flex flex-col gap-4">
       <input type="hidden" name="next" value={nextPath} />
+
+      {!isSignIn ? (
+        <label className="flex flex-col gap-1 text-sm">
+          <span className="font-medium">Имя</span>
+          <input
+            type="text"
+            name="displayName"
+            autoComplete="given-name"
+            minLength={DISPLAY_NAME_LIMITS.min}
+            maxLength={DISPLAY_NAME_LIMITS.max}
+            required
+            placeholder="Как к тебе обращаться"
+            className="rounded-md border border-neutral-300 px-3 py-2 outline-none focus:border-neutral-900"
+          />
+        </label>
+      ) : null}
 
       <label className="flex flex-col gap-1 text-sm">
         <span className="font-medium">Email</span>

@@ -13,11 +13,11 @@ export default async function ProgressPage() {
     return <SupabaseMissingNotice />;
   }
 
-  const { supabase, username } = await requireProfile();
+  const { supabase, username, displayName } = await requireProfile();
   const entries = await fetchProgressEntries(supabase);
 
   return (
-    <AppShell username={username}>
+    <AppShell username={username} displayName={displayName}>
       <div className="flex flex-col gap-6">
         <section className="flex flex-col gap-1">
           <h1 className="text-2xl font-semibold tracking-tight">Прогресс</h1>

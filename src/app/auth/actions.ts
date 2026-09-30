@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { DISPLAY_NAME_LIMITS, normalizeDisplayName } from "@/lib/display-name";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 import type { AuthState } from "./auth-state";
@@ -64,8 +65,22 @@ export async function signUp(
     return { error: "Введите email и пароль.", message: null };
   }
 
+  const displayName = normalizeDisplayName(formData.get("displayName"));
+
+  if (displayName === null) {
+    return {
+      error: `Введите имя от ${DISPLAY_NAME_LIMITS.min} до ${DISPLAY_NAME_LIMITS.max} символов.`,
+      message: null,
+    };
+  }
+
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.signUp(credentials);
+
+  // Триггер handle_new_user читает имя отсюда и кладёт в profiles.display_name.
+  const { data, error } = await supabase.auth.signUp({
+    ...credentials,
+    options: { data: { display_name: displayName } },
+  });
 
   if (error) {
     return { error: `Не удалось зарегистрироваться: ${error.message}`, message: null };

@@ -6,6 +6,7 @@ import { WorkoutPlanView } from "@/components/workout-plan-view";
 import { SupabaseMissingNotice } from "@/components/supabase-missing-notice";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { fetchPublicProfileByUsername } from "@/lib/profiles";
 import { WORKOUT_GOAL_LABELS } from "@/lib/labels";
 import { fetchPublicProgress } from "@/lib/progress-data";
 import { formatProgressReps, formatWeight } from "@/lib/progress";
@@ -15,7 +16,6 @@ import { isWorkoutPlan } from "@/lib/workout-generator";
 
 export const dynamic = "force-dynamic";
 
-type PublicProfile = { id: string; username: string; created_at: string };
 type PublicWorkout = { id: string; name: string; goal: string; created_at: string; payload: unknown };
 
 async function getPublicProfile(username: string) {
@@ -24,14 +24,7 @@ async function getPublicProfile(username: string) {
   }
 
   const supabase = await createClient();
-
-  const { data: profileData } = await supabase
-    .from("profiles")
-    .select("id, username, created_at")
-    .eq("username", username)
-    .maybeSingle();
-
-  const profile = profileData as PublicProfile | null;
+  const profile = await fetchPublicProfileByUsername(supabase, username);
 
   if (!profile) {
     return null;
@@ -87,9 +80,12 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
             <User className="size-5" />
           </span>
           <div className="min-w-0">
-            <h1 className="truncate text-xl font-semibold tracking-tight">{profile.username}</h1>
+            <h1 className="truncate text-xl font-semibold tracking-tight">
+              {profile.displayName ?? profile.username}
+            </h1>
             <p className="text-xs text-muted-foreground">
-              В проекте с {new Date(profile.created_at).toLocaleDateString("ru-RU")}
+              @{profile.username} · в проекте с{" "}
+              {new Date(profile.created_at).toLocaleDateString("ru-RU")}
             </p>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { DailyStatus } from "@/components/daily-status";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireProfile } from "@/lib/current-user";
+import { firstName } from "@/lib/display-name";
 import { WORKOUT_GOAL_LABELS } from "@/lib/labels";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { SupabaseMissingNotice } from "@/components/supabase-missing-notice";
@@ -30,7 +31,7 @@ export default async function DashboardPage() {
     return <SupabaseMissingNotice />;
   }
 
-  const { supabase, user, username } = await requireProfile();
+  const { supabase, user, username, displayName } = await requireProfile();
 
   const [checkinsResult, workoutsResult] = await Promise.all([
     supabase
@@ -50,11 +51,11 @@ export default async function DashboardPage() {
   const latestCheckin = checkins[0] ?? null;
 
   return (
-    <AppShell username={username}>
+    <AppShell username={username} displayName={displayName}>
       <div className="flex flex-col gap-6">
         <section className="flex flex-col gap-1">
           <h1 className="text-2xl font-semibold tracking-tight">
-            Привет{username ? `, ${username}` : ""}
+            {displayName ? `Привет, ${firstName(displayName)}` : "Привет"}
           </h1>
           <p className="break-words text-sm text-muted-foreground">
             {user.email} · собрано {workouts.length === 5 ? "5+" : workouts.length} тренировок

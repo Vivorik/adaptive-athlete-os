@@ -11,10 +11,10 @@ export default async function CheckinPage() {
     return <SupabaseMissingNotice />;
   }
 
-  const { username } = await requireProfile();
+  const { username, displayName } = await requireProfile();
 
   return (
-    <AppShell username={username}>
+    <AppShell username={username} displayName={displayName}>
       <div className="flex flex-col gap-6">
         <section className="flex flex-col gap-1">
           <h1 className="text-2xl font-semibold tracking-tight">Чек-ин</h1>
