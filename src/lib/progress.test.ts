@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { EXERCISES, MUSCLE_GROUPS } from "./exercise-catalog";
 import { groupExercisesByMuscle } from "./labels";
-import { formatWeight, getExerciseName, isWorkoutWeight, parseProgressForm } from "./progress";
+import { formatWeight, getExerciseName, parseProgressForm } from "./progress";
 
 const EXERCISE = EXERCISES[0].name;
 
@@ -17,7 +17,6 @@ function form(values: Record<string, string>) {
 
 const VALID = {
   exerciseName: EXERCISE,
-  weightKind: "external",
   maxReps: "10",
   maxWeight: "80",
   workReps: "8",
@@ -67,14 +66,19 @@ describe("parseProgressForm", () => {
     expect(parsed.workWeightKg).toBe(80);
   });
 
-  it("обнуляет вес для bodyweight и band", () => {
-    for (const weightKind of ["bodyweight", "band"]) {
-      const parsed = parseProgressForm(
-        form({ ...VALID, weightKind, maxWeight: "50", workWeight: "40" }),
-      );
-      expect(parsed.maxWeightKg).toBe(0);
-      expect(parsed.workWeightKg).toBe(0);
-    }
+  it("принимает нулевой вес как признак отсутствия отягощения", () => {
+    const parsed = parseProgressForm(form({ ...VALID, maxWeight: "0", workWeight: "0" }));
+    expect(parsed.maxWeightKg).toBe(0);
+    expect(parsed.workWeightKg).toBe(0);
+  });
+
+  it("игнорирует прежний переключатель отягощения и всё равно требует вес", () => {
+    expect(() => parseProgressForm(form({ ...VALID, weightKind: "bodyweight" }))).not.toThrow();
+    expect(() =>
+      parseProgressForm(
+        form({ ...VALID, weightKind: "bodyweight", maxWeight: "", workWeight: "" }),
+      ),
+    ).toThrow(/Заполни вес/);
   });
 
   it("отвергает дробные повторы", () => {
@@ -90,20 +94,16 @@ describe("parseProgressForm", () => {
     expect(() => parseProgressForm(form({ ...VALID, maxReps: "101" }))).toThrow(/целым числом/);
   });
 
-  it("требует вес для внешнего отягощения", () => {
+  it("требует вес в рекорде", () => {
     expect(() => parseProgressForm(form({ ...VALID, maxWeight: "" }))).toThrow(/Заполни вес/);
+  });
+
+  it("требует рабочий вес", () => {
+    expect(() => parseProgressForm(form({ ...VALID, workWeight: "" }))).toThrow(/Заполни вес/);
   });
 
   it("отвергает вес выше лимита", () => {
     expect(() => parseProgressForm(form({ ...VALID, maxWeight: "1001" }))).toThrow(/Вес должен быть/);
-  });
-});
-
-describe("isWorkoutWeight", () => {
-  it("узнаёт только bodyweight и band", () => {
-    expect(isWorkoutWeight("bodyweight")).toBe(true);
-    expect(isWorkoutWeight("band")).toBe(true);
-    expect(isWorkoutWeight("barbell")).toBe(false);
   });
 });
 

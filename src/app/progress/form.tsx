@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { groupExercisesByMuscle } from "@/lib/labels";
-import { PROGRESS_LIMITS, WORKOUT_WEIGHT_OPTIONS } from "@/lib/progress";
+import { PROGRESS_LIMITS } from "@/lib/progress";
 import { saveProgressAction } from "./actions";
 import { initialProgressState } from "./state";
 
@@ -25,9 +25,6 @@ const EXERCISE_GROUPS = groupExercisesByMuscle();
 export function ProgressForm() {
   const [state, formAction, isPending] = useActionState(saveProgressAction, initialProgressState);
   const [exerciseName, setExerciseName] = useState("");
-  const [weightKind, setWeightKind] = useState("external");
-
-  const usesExternalWeight = weightKind === "external";
 
   return (
     <Card>
@@ -35,13 +32,11 @@ export function ProgressForm() {
         <CardTitle className="text-sm font-medium text-muted-foreground">Записать упражнение</CardTitle>
         <CardDescription className="text-xs">
           Личный рекорд и то, с чем ты работаешь сейчас. Запись по упражнению одна, повторно
-          обновляет ту же строку.
+          обновляет ту же строку. Если отягощения нет — поставь 0.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="flex flex-col gap-4">
-          <input type="hidden" name="weightKind" value={weightKind} />
-
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="exerciseName">Упражнение</Label>
             <Select value={exerciseName} onValueChange={setExerciseName} name="exerciseName">
@@ -63,31 +58,6 @@ export function ProgressForm() {
             </Select>
           </div>
 
-          <fieldset className="flex flex-col gap-2">
-            <legend className="text-sm font-medium">Отягощение</legend>
-            <div className="flex flex-wrap gap-2">
-              <Button
-                type="button"
-                variant={usesExternalWeight ? "default" : "outline"}
-                size="sm"
-                onClick={() => setWeightKind("external")}
-              >
-                Штанга / гантели
-              </Button>
-              {WORKOUT_WEIGHT_OPTIONS.map((option) => (
-                <Button
-                  key={option.value}
-                  type="button"
-                  variant={weightKind === option.value ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setWeightKind(option.value)}
-                >
-                  {option.label}
-                </Button>
-              ))}
-            </div>
-          </fieldset>
-
           <div className="grid gap-4 sm:grid-cols-2">
             <fieldset className="flex flex-col gap-3 rounded-lg border p-3">
               <legend className="px-1 text-sm font-medium">Личный рекорд</legend>
@@ -105,22 +75,20 @@ export function ProgressForm() {
                   defaultValue={8}
                 />
               </div>
-              {usesExternalWeight ? (
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor="maxWeight">Вес, кг</Label>
-                  <Input
-                    id="maxWeight"
-                    name="maxWeight"
-                    type="number"
-                    inputMode="decimal"
-                    min={PROGRESS_LIMITS.weightKg.min}
-                    max={PROGRESS_LIMITS.weightKg.max}
-                    step="0.5"
-                    required
-                    defaultValue={40}
-                  />
-                </div>
-              ) : null}
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="maxWeight">Вес, кг</Label>
+                <Input
+                  id="maxWeight"
+                  name="maxWeight"
+                  type="number"
+                  inputMode="decimal"
+                  min={PROGRESS_LIMITS.weightKg.min}
+                  max={PROGRESS_LIMITS.weightKg.max}
+                  step="0.5"
+                  required
+                  defaultValue={40}
+                />
+              </div>
             </fieldset>
 
             <fieldset className="flex flex-col gap-3 rounded-lg border p-3">
@@ -139,22 +107,20 @@ export function ProgressForm() {
                   defaultValue={3}
                 />
               </div>
-              {usesExternalWeight ? (
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor="workWeight">Вес, кг</Label>
-                  <Input
-                    id="workWeight"
-                    name="workWeight"
-                    type="number"
-                    inputMode="decimal"
-                    min={PROGRESS_LIMITS.weightKg.min}
-                    max={PROGRESS_LIMITS.weightKg.max}
-                    step="0.5"
-                    required
-                    defaultValue={20}
-                  />
-                </div>
-              ) : null}
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="workWeight">Вес, кг</Label>
+                <Input
+                  id="workWeight"
+                  name="workWeight"
+                  type="number"
+                  inputMode="decimal"
+                  min={PROGRESS_LIMITS.weightKg.min}
+                  max={PROGRESS_LIMITS.weightKg.max}
+                  step="0.5"
+                  required
+                  defaultValue={20}
+                />
+              </div>
             </fieldset>
           </div>
 
