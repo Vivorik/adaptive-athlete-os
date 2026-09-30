@@ -33,13 +33,13 @@ export type Exercise = {
 };
 
 export const EXERCISES: Exercise[] = [
-  { name: "Жим лёжа штанги", muscleGroup: "chest", equipment: "barbell", difficulty: "intermediate", isCompound: true },
+  { name: "Жим штанги лёжа", muscleGroup: "chest", equipment: "barbell", difficulty: "intermediate", isCompound: true },
   { name: "Жим гантелей лёжа", muscleGroup: "chest", equipment: "dumbbell", difficulty: "intermediate", isCompound: true },
   { name: "Жим гантелей на наклонной скамье", muscleGroup: "chest", equipment: "dumbbell", difficulty: "intermediate", isCompound: true },
   { name: "Отжимания от пола", muscleGroup: "chest", equipment: "bodyweight", difficulty: "beginner", isCompound: true },
-  { name: "Сведение гантелей в кроссовере", muscleGroup: "chest", equipment: "cable", difficulty: "beginner", isCompound: false },
+  { name: "Сведение рук в кроссовере", muscleGroup: "chest", equipment: "cable", difficulty: "beginner", isCompound: false },
   { name: "Разводка гантелей", muscleGroup: "chest", equipment: "dumbbell", difficulty: "beginner", isCompound: false },
-  { name: "Жим в кроссовере одной рукой", muscleGroup: "chest", equipment: "machine", difficulty: "beginner", isCompound: false },
+  { name: "Жим в кроссовере одной рукой", muscleGroup: "chest", equipment: "cable", difficulty: "beginner", isCompound: false },
 
   { name: "Становая тяга штанги", muscleGroup: "back", equipment: "barbell", difficulty: "intermediate", isCompound: true },
   { name: "Тяга штанги в наклоне", muscleGroup: "back", equipment: "barbell", difficulty: "intermediate", isCompound: true },
@@ -49,19 +49,19 @@ export const EXERCISES: Exercise[] = [
   { name: "Тяга гантели в наклоне с упором", muscleGroup: "back", equipment: "dumbbell", difficulty: "beginner", isCompound: true },
   { name: "Австралийские подтягивания", muscleGroup: "back", equipment: "bodyweight", difficulty: "beginner", isCompound: true },
   { name: "Тяга гантели сидя на скамье", muscleGroup: "back", equipment: "dumbbell", difficulty: "beginner", isCompound: false },
-  { name: "Сведение в кроссовере", muscleGroup: "back", equipment: "cable", difficulty: "beginner", isCompound: false },
+  { name: "Разведение рук в кроссовере", muscleGroup: "back", equipment: "cable", difficulty: "beginner", isCompound: false },
   { name: "Тяга резинки сидя", muscleGroup: "back", equipment: "band", difficulty: "beginner", isCompound: false },
 
   { name: "Присед со штангой", muscleGroup: "legs", equipment: "barbell", difficulty: "intermediate", isCompound: true },
   { name: "Жим ногами в тренажёре", muscleGroup: "legs", equipment: "machine", difficulty: "beginner", isCompound: true },
   { name: "Румынская тяга с гантелями", muscleGroup: "legs", equipment: "dumbbell", difficulty: "beginner", isCompound: true },
   { name: "Выпады с гантелями", muscleGroup: "legs", equipment: "dumbbell", difficulty: "beginner", isCompound: true },
-  { name: "Присед на одной ноге", muscleGroup: "legs", equipment: "dumbbell", difficulty: "intermediate", isCompound: true },
+  { name: "Присед с гантели на одной ноге", muscleGroup: "legs", equipment: "dumbbell", difficulty: "intermediate", isCompound: true },
   { name: "Разгибания ног в тренажёре", muscleGroup: "legs", equipment: "machine", difficulty: "beginner", isCompound: false },
   { name: "Сгибания ног лёжа в тренажёре", muscleGroup: "legs", equipment: "machine", difficulty: "beginner", isCompound: false },
   { name: "Подъёмы на носки стоя", muscleGroup: "legs", equipment: "machine", difficulty: "beginner", isCompound: false },
 
-  { name: "Трастер с гантелями", muscleGroup: "full_body", equipment: "dumbbell", difficulty: "intermediate", isCompound: true },
+  { name: "Взятие гантелей на грудь стоя", muscleGroup: "full_body", equipment: "dumbbell", difficulty: "intermediate", isCompound: true },
   { name: "Гоблет-присед", muscleGroup: "full_body", equipment: "dumbbell", difficulty: "beginner", isCompound: true },
   { name: "Жим гантелей над головой сидя", muscleGroup: "full_body", equipment: "dumbbell", difficulty: "beginner", isCompound: true },
   { name: "Отжимания узким хватом на брусьях", muscleGroup: "full_body", equipment: "bodyweight", difficulty: "advanced", isCompound: true },
