@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Dumbbell, TrendingUp, User } from "lucide-react";
+import { ArrowLeft, Dumbbell, TrendingUp, User } from "lucide-react";
 import { WorkoutPlanView } from "@/components/workout-plan-view";
 import { SupabaseMissingNotice } from "@/components/supabase-missing-notice";
 import { Button } from "@/components/ui/button";
@@ -74,6 +74,14 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-8">
+      <Link
+        href="/u"
+        className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ArrowLeft data-icon="inline-start" />
+        Все атлеты
+      </Link>
+
       <header className="flex flex-wrap items-center justify-between gap-3 sm:flex-nowrap sm:gap-4">
         <div className="flex min-w-0 items-center gap-3">
           <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted">

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Dumbbell, Moon, Zap } from "lucide-react";
+import { ArrowRight, Dumbbell, Moon, Users, Zap } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { DailyStatus } from "@/components/daily-status";
 import { Button } from "@/components/ui/button";
@@ -120,6 +120,28 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+              <Users className="size-4" />
+              Другие атлеты
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+              <p className="text-sm text-muted-foreground">
+                Посмотри, кто ещё открыл свой прогресс, и сравни цифры.
+              </p>
+              <Button asChild variant="outline" size="sm" className="w-full shrink-0 sm:w-auto">
+                <Link href="/u">
+                  Смотреть всех
+                  <ArrowRight data-icon="inline-end" />
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>
