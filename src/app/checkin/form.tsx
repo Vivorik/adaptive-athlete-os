@@ -36,7 +36,7 @@ export function CheckinForm() {
         <CardHeader>
           <CardTitle className="text-sm font-medium text-muted-foreground">Сон</CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center gap-4">
+        <CardContent className="flex items-center gap-3 sm:gap-4">
           <Slider
             min={0}
             max={12}
@@ -44,9 +44,9 @@ export function CheckinForm() {
             value={[sleepHours]}
             onValueChange={(value) => setSleepHours(value[0] ?? 0)}
             aria-label="Часов сна"
-            className="flex-1"
+            className="min-w-0 flex-1"
           />
-          <span className="w-24 shrink-0 text-right text-sm font-semibold tabular-nums">
+          <span className="w-14 shrink-0 text-right text-sm font-semibold tabular-nums sm:w-24">
             {sleepHours.toFixed(1).replace(".", ",")} ч
           </span>
         </CardContent>
@@ -56,7 +56,7 @@ export function CheckinForm() {
         <CardHeader>
           <CardTitle className="text-sm font-medium text-muted-foreground">Энергия</CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center gap-4">
+        <CardContent className="flex items-center gap-3 sm:gap-4">
           <Slider
             min={1}
             max={5}
@@ -64,9 +64,9 @@ export function CheckinForm() {
             value={[energy]}
             onValueChange={(value) => setEnergy(value[0] ?? 3)}
             aria-label="Энергия от 1 до 5"
-            className="flex-1"
+            className="min-w-0 flex-1"
           />
-          <span className="w-24 shrink-0 text-right text-sm font-semibold tabular-nums">
+          <span className="w-14 shrink-0 text-right text-sm font-semibold tabular-nums sm:w-24">
             {energy} / 5
           </span>
         </CardContent>
@@ -80,8 +80,11 @@ export function CheckinForm() {
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           {MUSCLE_GROUPS.map((group) => (
-            <div key={group} className="flex items-center gap-4">
-              <Label htmlFor={`soreness-${group}`} className="w-24 shrink-0 text-sm">
+            <div key={group} className="flex items-center gap-3 sm:gap-4">
+              <Label
+                htmlFor={`soreness-${group}`}
+                className="w-20 shrink-0 text-sm sm:w-24"
+              >
                 {MUSCLE_GROUP_LABELS[group]}
               </Label>
               <Slider
@@ -93,9 +96,9 @@ export function CheckinForm() {
                 onValueChange={(value) =>
                   setSoreness((previous) => ({ ...previous, [group]: value[0] ?? 0 }))
                 }
-                className="flex-1"
+                className="min-w-0 flex-1"
               />
-              <span className="w-12 shrink-0 text-right text-sm tabular-nums text-muted-foreground">
+              <span className="w-6 shrink-0 text-right text-sm tabular-nums text-muted-foreground sm:w-12">
                 {soreness[group] ?? 0}
               </span>
             </div>

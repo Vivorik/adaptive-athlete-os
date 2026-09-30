@@ -56,7 +56,7 @@ export default async function DashboardPage() {
           <h1 className="text-2xl font-semibold tracking-tight">
             Привет{username ? `, ${username}` : ""}
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="break-words text-sm text-muted-foreground">
             {user.email} · собрано {workouts.length === 5 ? "5+" : workouts.length} тренировок
           </p>
         </section>
@@ -132,8 +132,11 @@ export default async function DashboardPage() {
             ) : (
               <ul className="flex flex-col divide-y">
                 {workouts.map((workout) => (
-                  <li key={workout.id} className="flex items-center justify-between gap-4 py-2">
-                    <span className="text-sm font-medium">{workout.name}</span>
+                  <li
+                    key={workout.id}
+                    className="flex flex-col gap-0.5 py-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+                  >
+                    <span className="min-w-0 break-words text-sm font-medium">{workout.name}</span>
                     <span className="shrink-0 text-xs text-muted-foreground">
                       {WORKOUT_GOAL_LABELS[workout.goal as keyof typeof WORKOUT_GOAL_LABELS] ??
                         workout.goal}

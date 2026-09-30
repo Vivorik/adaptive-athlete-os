@@ -1,4 +1,4 @@
-import type { Equipment, MuscleGroup } from "@/lib/exercise-catalog";
+import { EXERCISES, MUSCLE_GROUPS, type Equipment, type MuscleGroup } from "@/lib/exercise-catalog";
 import type {
   EquipmentMode,
   Experience,
@@ -64,4 +64,13 @@ export function buildPlanName(input: {
   return `${WORKOUT_GOAL_LABELS[input.goal]} · ${input.daysPerWeek} ${dayWord} · ${
     EQUIPMENT_MODE_LABELS[input.equipment].split(" ")[0]
   }`;
+}
+
+/** Каталог упражнений, сгруппированный по мышечной группе, в порядке MUSCLE_GROUPS. */
+export function groupExercisesByMuscle() {
+  return MUSCLE_GROUPS.map((group) => ({
+    group,
+    label: MUSCLE_GROUP_LABELS[group],
+    exercises: EXERCISES.filter((exercise) => exercise.muscleGroup === group),
+  })).filter((entry) => entry.exercises.length > 0);
 }
