@@ -3,16 +3,24 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Dumbbell, User } from "lucide-react";
 import { WorkoutPlanView } from "@/components/workout-plan-view";
+import { SupabaseMissingNotice } from "@/components/supabase-missing-notice";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WORKOUT_GOAL_LABELS } from "@/lib/labels";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 import { isWorkoutPlan } from "@/lib/workout-generator";
+
+export const dynamic = "force-dynamic";
 
 type PublicProfile = { id: string; username: string; created_at: string };
 type PublicWorkout = { id: string; name: string; goal: string; created_at: string; payload: unknown };
 
 async function getPublicProfile(username: string) {
+  if (!isSupabaseConfigured()) {
+    return null;
+  }
+
   const supabase = await createClient();
 
   const { data: profileData } = await supabase
@@ -54,6 +62,11 @@ export async function generateMetadata({
 
 export default async function PublicProfilePage({ params }: PublicProfilePageProps) {
   const { username } = await params;
+
+  if (!isSupabaseConfigured()) {
+    return <SupabaseMissingNotice />;
+  }
+
   const result = await getPublicProfile(username);
 
   if (!result) {

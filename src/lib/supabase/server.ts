@@ -3,8 +3,10 @@ import { cookies } from "next/headers";
 import { getSupabaseEnv } from "./env";
 
 export async function createClient() {
-  const { url, key } = getSupabaseEnv();
+  // cookies() читаем до проверки env: именно он помечает страницу как динамическую.
+  // Если бросить раньше, Next решает, что страницу можно пререндерить, и падает на сборке.
   const cookieStore = await cookies();
+  const { url, key } = getSupabaseEnv();
 
   return createServerClient(url, key, {
     cookies: {

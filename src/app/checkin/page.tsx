@@ -1,8 +1,16 @@
 import { AppShell } from "@/components/app-shell";
+import { SupabaseMissingNotice } from "@/components/supabase-missing-notice";
 import { requireProfile } from "@/lib/current-user";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { CheckinForm } from "./form";
 
+export const dynamic = "force-dynamic";
+
 export default async function CheckinPage() {
+  if (!isSupabaseConfigured()) {
+    return <SupabaseMissingNotice />;
+  }
+
   const { username } = await requireProfile();
 
   return (

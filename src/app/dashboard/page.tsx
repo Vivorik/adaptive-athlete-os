@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireProfile } from "@/lib/current-user";
 import { WORKOUT_GOAL_LABELS } from "@/lib/labels";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { SupabaseMissingNotice } from "@/components/supabase-missing-notice";
+
+export const dynamic = "force-dynamic";
 
 type CheckinRow = { date: string; sleep_hours: number | null; energy: number | null };
 type WorkoutRow = { id: string; name: string; goal: string; created_at: string };
@@ -22,6 +26,10 @@ function formatSleepHours(hours: number | null | undefined) {
 }
 
 export default async function DashboardPage() {
+  if (!isSupabaseConfigured()) {
+    return <SupabaseMissingNotice />;
+  }
+
   const { supabase, user, username } = await requireProfile();
 
   const [checkinsResult, workoutsResult] = await Promise.all([

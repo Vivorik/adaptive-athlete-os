@@ -3,6 +3,8 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 import { AuthForm } from "./form";
 
+export const dynamic = "force-dynamic";
+
 type AuthPageProps = {
   searchParams: Promise<{ mode?: string; next?: string }>;
 };

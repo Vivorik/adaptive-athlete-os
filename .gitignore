@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Next.js автогенерация файлов для ИИ-агентов (отключена через agentRules: false)
+/AGENTS.md
+/CLAUDE.md
