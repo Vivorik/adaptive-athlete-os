@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cheat sheet for bodybuilders
 
-## Getting Started
+Пет-проект: адаптивные тренировки, чек-ины восстановления и расчёт КБЖУ.
 
-First, run the development server:
+Приложение подстраивает нагрузку под самочувствие: чек-ин за сон, энергию и
+крепатуру меняет объём и повторения в сгенерированной программе.
+
+## Стек
+
+Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind CSS v4 ·
+shadcn/ui · Supabase (Postgres + Auth + RLS) · Vitest
+
+## Возможности
+
+- **Генератор тренировок** — 46 упражнений, 2–6 дней в неделю, цели сила / масса /
+  выносливость, спортзал или дом. Детерминирован: одинаковые параметры дают
+  одинаковую программу.
+- **Чек-ины** — сон, энергия, крепатура по семи мышечным группам, заметка.
+  Повторный чек-ин за день перезаписывает предыдущий.
+- **Адаптация нагрузки** — сон <5 ч срезает объём на 20%, энергия 1–2 на 25%,
+  крепатура бьёт по конкретной группе. Итог зажат в диапазон 0.6–1.15.
+- **КБЖУ** — BMR по Миффлину-Сан Жеору, TDEE, белок/жиры/углеводы.
+- **Публичные профили** — `/u/<username>`, только тренировки с `is_public = true`.
+
+## Запуск
 
 ```bash
+npm install
+cp .env.example .env.local   # подставь свои значения
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Приложение на `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Переменные окружения
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Переменная | Назначение |
+| --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | URL проекта Supabase |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable (anon) ключ |
 
-## Learn More
+## База данных
 
-To learn more about Next.js, take a look at the following resources:
+Схема, RLS-политики и триггер профиля — в `supabase/migrations/001_init.sql`.
+Применить на новом проекте:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+supabase db push
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Каталог упражнений хранится в коде (`src/lib/exercise-catalog.ts`) и заливается
+в базу генератором:
 
-## Deploy on Vercel
+```bash
+npm run db:seed    # перезаписывает существующие упражнения по имени
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Команды
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Команда | Что делает |
+| --- | --- |
+| `npm run dev` | Дев-сервер |
+| `npm run build` | Прод-сборка |
+| `npm run lint` | ESLint |
+| `npm test` | Vitest, 99 тестов |
+| `npm run test:watch` | Vitest в watch |
+| `npm run db:seed` | Перегенерировать `supabase/seed.sql` и залить каталог |
+
+## Безопасность
+
+RLS включён везде: `profiles` читаются публично, `workouts` — только свои или с
+`is_public = true`, `checkins` и `checkins`-запросы доступны лишь владельцу.
+Ключ в `.env.local` — publishable, он предназначен для браузера; секретный
+`service_role` в приложение попадать не должен.
+
+## Деплой на Vercel
+
+```bash
+npm i -g vercel
+vercel
+```
+
+В Variable Environment Variables добавить `NEXT_PUBLIC_SUPABASE_URL` и
+`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Vercel подхватит Next.js автоматически,
+дополнительных настроек сборки не нужно.
